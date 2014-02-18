@@ -3,7 +3,6 @@ code by evan magoni 2014
 rev 2014-02-17
 
 TODO: * fix line
-      * optimize
       * make wrap smoother
       * interactivity / use beziers?
 */
@@ -32,9 +31,11 @@ void fillArray() {
 }
 
 public void setup() {
-  size(1000,800);
   // Make a new instance of a PImage by loading an image file
   img = loadImage("self.jpg");
+  
+  size(img.width,img.height);
+
   cols = img.width;
   rows = img.height;
   
@@ -56,7 +57,7 @@ public void updateOffset() {
 public void draw() {
   background(0);
   img.loadPixels();
-
+  
   offset=0;
   k=0;
   
@@ -70,20 +71,10 @@ public void draw() {
       int x = j; // x position
       int y = i; // y position
       int loc = x + y*cols;           // Pixel array location
-      color c = img.pixels[loc];       // Grab the color
-
-      // Translate to the location, set fill and stroke, and draw the rect
-      pushMatrix();
-
-      translate((x + (int)offset)%cols, y); //wrap
+      color c = img.pixels[loc];       // Grab the color   
       
-      fill(c);
-      noStroke();
-      rectMode(CENTER);
-      rect(0,0,2,2);
-      popMatrix();
+      set((x + (int)offset)%cols, y, c); // set display pixels
     }
-
   }
   img.updatePixels();
 }
