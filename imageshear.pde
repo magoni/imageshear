@@ -61,6 +61,8 @@ public void draw() {
   offset=0;
   k=0;
   
+  loadPixels();
+  
   // Begin loop for rows
   for (int i = 0; i < rows; i++ ) {
     
@@ -70,11 +72,12 @@ public void draw() {
     for (int j = 0; j < cols; j++ ) {
       int x = j; // x position
       int y = i; // y position
-      int loc = x + y*cols;           // Pixel array location
-      color c = img.pixels[loc];       // Grab the color   
+      color c = img.pixels[x + y*cols]; //grab color of image 
       
-      set((x + (int)offset)%cols, y, c); // set display pixels
+      pixels[y*width + (x + (int)offset)%cols] = c; //set display pixels at new location
     }
   }
+  
   img.updatePixels();
+  updatePixels();
 }
