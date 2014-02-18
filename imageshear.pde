@@ -4,7 +4,7 @@ rev 2014-02-17
 
 TODO: * fix line
       * optimize
-      * implement wrap
+      * make wrap smoother
       * interactivity / use beziers?
 */
 
@@ -14,7 +14,6 @@ int cols, rows;
 float offset;
 int k;
 
-//------------- bullshit function functions ------------- 
 float[] function = new float[100];
 
 float f(float n, int a) {
@@ -24,15 +23,13 @@ float f(float n, int a) {
 
 void fillArray() {
   for(int x = 0; x < function.length/2; x++) {
-    function[x] = f(x/(function.length/.1), 4); // messing with the denominator sets point of mirroring, 2nd arg slope
+    function[x] = f(x/(function.length/.1), 4); // denominator sets point of mirroring, 2nd arg slope
   }
   
   for(int x = (function.length/2) + 1; x < function.length; x++) {
-    function[x] = function[(function.length/2)-x+(function.length/2)];
+    function[x] = function[(function.length/2)-x+(function.length/2)]; //reflect function over 2nd half of array
   }
 }
-
-//-----------  end bullshit function functions ----------- 
 
 public void setup() {
   size(1000,800);
@@ -41,12 +38,12 @@ public void setup() {
   cols = img.width;
   rows = img.height;
   
-  fillArray(); // bullshit function function
+  fillArray();
   
   noLoop();
 }
 
-public void updateCounter() {
+public void updateOffset() {
   if(k<function.length) {
     //offset = 100 * sin(radians(k));
     offset = 100 * function[k];
@@ -65,8 +62,8 @@ public void draw() {
   
   // Begin loop for rows
   for (int i = 0; i < rows; i++ ) {
-
-    if(i>140) updateCounter();
+    
+    if(i>140) updateOffset();
 
     // Begin loop for columns
     for (int j = 0; j < cols; j++ ) {
@@ -78,7 +75,7 @@ public void draw() {
       // Translate to the location, set fill and stroke, and draw the rect
       pushMatrix();
 
-      translate((x + (int)offset), y);
+      translate((x + (int)offset)%cols, y); //wrap
       
       fill(c);
       noStroke();
