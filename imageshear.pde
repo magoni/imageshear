@@ -3,13 +3,15 @@ code by evan magoni 2014
 rev 2014-02-17
 
 TODO: * fix line
+      * optimize
       * implement wrap
+      * interactivity / use beziers?
 */
 
 PImage img;
 int cols, rows;
 
-float counter;
+float offset;
 int k;
 
 //------------- bullshit function functions ------------- 
@@ -46,11 +48,11 @@ public void setup() {
 
 public void updateCounter() {
   if(k<function.length) {
-    //counter = 100 * sin(radians(k));
-    counter = 100 * function[k];
+    //offset = 100 * sin(radians(k));
+    offset = 100 * function[k];
     k++;
   } else {
-    counter=0;
+    offset=0;
   }
 }
 
@@ -58,7 +60,7 @@ public void draw() {
   background(0);
   img.loadPixels();
 
-  counter=0;
+  offset=0;
   k=0;
   
   // Begin loop for rows
@@ -76,7 +78,7 @@ public void draw() {
       // Translate to the location, set fill and stroke, and draw the rect
       pushMatrix();
 
-      translate((x + (int)counter), y);
+      translate((x + (int)offset), y);
       
       fill(c);
       noStroke();
