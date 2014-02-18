@@ -30,6 +30,15 @@ void fillArray() {
   }
 }
 
+public void updateOffset() {
+  if(k<function.length) {
+    offset = 100 * function[k];
+    k++;
+  } else {
+    offset=0;
+  }
+}
+
 public void setup() {
   // Make a new instance of a PImage by loading an image file
   img = loadImage("self.jpg");
@@ -44,32 +53,21 @@ public void setup() {
   noLoop();
 }
 
-public void updateOffset() {
-  if(k<function.length) {
-    //offset = 100 * sin(radians(k));
-    offset = 100 * function[k];
-    k++;
-  } else {
-    offset=0;
-  }
-}
-
 public void draw() {
   background(0);
-  img.loadPixels();
   
   offset=0;
   k=0;
   
+  img.loadPixels();
   loadPixels();
   
-  // Begin loop for rows
   for (int i = 0; i < rows; i++ ) {
     
     if(i>140) updateOffset();
-
-    // Begin loop for columns
+    
     for (int j = 0; j < cols; j++ ) {
+      
       int x = j; // x position
       int y = i; // y position
       color c = img.pixels[x + y*cols]; //grab color of image 
