@@ -1,6 +1,7 @@
 /*
-imageshear
-code by evan magoni 2014
+imageshear 0.1 ( http://github.com/magoni/imageshear )
+all code by evan magoni 2014 ( http://github.com/magoni )
+precompiled demo binaries ( https://www.dropbox.com/sh/0c785mldnbwrm0t/ojwg3CCqP6 )
 */
 
 PImage img;
@@ -51,7 +52,7 @@ public void freezeImage() {
 }
 
 public void setup() {
-  img = loadImage("self.jpg");
+  img = loadImage("self.jpg"); //change to any image file you wish to shear
   
   size(img.width,img.height);
 
