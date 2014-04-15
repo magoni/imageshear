@@ -1,19 +1,12 @@
 /*
 code by evan magoni 2014
-rev 2014-02-17
-
-TODO: * fix line
-      * make wrap smoother
-      * interactivity / use beziers?
 */
 
-PImage img;
+PImage img, newimg;
 int cols, rows;
 
 float offset;
-int k;
-
-  int x, y;
+int k, x, y;
 color c;
 
 float[] function = new float[100];
@@ -36,11 +29,23 @@ void fillArray() {
 
 public void updateOffset() {
   if(k<function.length) {
-    offset = mouseX/2 * function[k];
+    offset = mouseX/2 * function[k]; //mouseX control: amount of shearing
     k++;
   } else {
     offset=0;
   }
+}
+
+public void freezeImage() {
+  loadPixels();
+  img.loadPixels();
+  for (int i = 0; i < rows; i++ ) {    
+    for (int j = 0; j < cols; j++ ) {
+      img.pixels[j + i*cols] = pixels[j + i*width]; //replace img with pixels in display window
+    }
+  }
+  img.updatePixels();
+  updatePixels();
 }
 
 public void setup() {
@@ -52,8 +57,6 @@ public void setup() {
   rows = img.height;
   
   fillArray();
-
-  //noLoop();
 }
 
 public void draw() {
@@ -66,29 +69,24 @@ public void draw() {
   loadPixels();
   
   for (int i = 0; i < rows; i++ ) {
-    
-    if(i>mouseY) updateOffset();
+    if(i>mouseY) updateOffset(); // mouseY control: start of shear
     
     for (int j = 0; j < cols; j++ ) {
-      x = j; // x position
-      y = i; // y position
-      c = img.pixels[x + y*cols]; //grab color of original image 
-      
-      pixels[y*width + (x + (int)offset)%cols] = c; //display pixels at new location
+      c = img.pixels[j + i*cols]; //grab color of original image 
+      pixels[i*width + (j + (int)offset)%cols] = c; //display pixels at new location
     }
   }
   
   img.updatePixels();
-  updatePixels();
-  
-  //save
+  updatePixels(); 
+
   if(keyPressed) {
     if (key == 's') {
-      saveFrame("sheared.png");
+      saveFrame("sheared.png"); //save current display to file
     }
   }
 }
 
 void mousePressed() {
-  
+  freezeImage();
 }
