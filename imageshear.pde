@@ -80,4 +80,15 @@ public void draw() {
   
   img.updatePixels();
   updatePixels();
+  
+  //save
+  if(keyPressed) {
+    if (key == 's') {
+      saveFrame("sheared.png");
+    }
+  }
+}
+
+void mousePressed() {
+  
 }
