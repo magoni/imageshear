@@ -71,7 +71,7 @@ public void draw() {
   loadPixels();
   
   for (int i = 0; i < rows; i++ ) {
-    if(i>mouseY) updateOffset(); // mouseY control: start of shear
+    if(i>mouseY-(shearHeight/2)) updateOffset(); // mouseY control: start of shear
     
     for (int j = 0; j < cols; j++ ) {
       c = img.pixels[j + i*cols]; //grab color of original image 
