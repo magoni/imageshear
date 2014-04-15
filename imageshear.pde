@@ -1,15 +1,17 @@
 /*
+imageshear
 code by evan magoni 2014
 */
 
-PImage img, newimg;
+PImage img;
 int cols, rows;
 
 float offset;
-int k, x, y;
+int k;
 color c;
 
-float[] function = new float[100];
+float[] function = new float[500];
+int shearHeight = 100;
 
 float f(float n, int a) {
   //arguments: n is x value (rotated), a is slope
@@ -18,12 +20,12 @@ float f(float n, int a) {
 
 void fillArray() {
   //creates a curve by which to offset rows
-  for(int x = 0; x < (function.length/2) + 1; x++) {
-    function[x] = f(x/(function.length/.1), 4); //denominator sets point of mirroring, 2nd arg slope
+  for(int x = 0; x < (shearHeight/2) + 1; x++) {
+    function[x] = f(x/(shearHeight/.1), 4); //denominator sets point of mirroring, 2nd arg slope
   }
   
-  for(int x = (function.length/2)+1; x < function.length; x++) {
-    function[x] = function[(function.length/2)-x+(function.length/2)]; //reflect fn over 2nd half of array
+  for(int x = (shearHeight/2)+1; x < shearHeight; x++) {
+    function[x] = function[(shearHeight/2)-x+(shearHeight/2)]; //reflect fn over 2nd half of array
   }
 }
 
@@ -84,9 +86,19 @@ public void draw() {
     if (key == 's') {
       saveFrame("sheared.png"); //save current display to file
     }
+    //control height of shear by arrow keys (up/down) (min 70, max 500)
+    if (key == CODED) {
+      if(keyCode == UP && shearHeight < 500) {
+        shearHeight += 10;
+        fillArray();
+      } else if (keyCode == DOWN && shearHeight > 70) {
+        shearHeight -= 10;
+        fillArray();
+      }
+    }
   }
 }
 
 void mousePressed() {
-  freezeImage();
+  if (mouseButton == LEFT) freezeImage();
 }
