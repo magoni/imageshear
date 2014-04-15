@@ -13,6 +13,9 @@ int cols, rows;
 float offset;
 int k;
 
+  int x, y;
+color c;
+
 float[] function = new float[100];
 
 float f(float n, int a) {
@@ -33,7 +36,7 @@ void fillArray() {
 
 public void updateOffset() {
   if(k<function.length) {
-    offset = 100 * function[k];
+    offset = mouseX/2 * function[k];
     k++;
   } else {
     offset=0;
@@ -49,8 +52,8 @@ public void setup() {
   rows = img.height;
   
   fillArray();
-  
-  noLoop();
+
+  //noLoop();
 }
 
 public void draw() {
@@ -64,12 +67,12 @@ public void draw() {
   
   for (int i = 0; i < rows; i++ ) {
     
-    if(i>140) updateOffset();
+    if(i>mouseY) updateOffset();
     
     for (int j = 0; j < cols; j++ ) {
-      int x = j; // x position
-      int y = i; // y position
-      color c = img.pixels[x + y*cols]; //grab color of original image 
+      x = j; // x position
+      y = i; // y position
+      c = img.pixels[x + y*cols]; //grab color of original image 
       
       pixels[y*width + (x + (int)offset)%cols] = c; //display pixels at new location
     }
