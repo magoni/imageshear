@@ -16,17 +16,18 @@ int k;
 float[] function = new float[100];
 
 float f(float n, int a) {
-  //arguments: n is x value, a is slope
+  //arguments: n is x value (rotated), a is slope
   return (pow(16*n,a) / (pow(16*n,a) + pow((1 - 16*n),a)));
 }
 
 void fillArray() {
-  for(int x = 0; x < function.length/2; x++) {
-    function[x] = f(x/(function.length/.1), 4); // denominator sets point of mirroring, 2nd arg slope
+  //creates a curve by which to offset rows
+  for(int x = 0; x < (function.length/2) + 1; x++) {
+    function[x] = f(x/(function.length/.1), 4); //denominator sets point of mirroring, 2nd arg slope
   }
   
-  for(int x = (function.length/2) + 1; x < function.length; x++) {
-    function[x] = function[(function.length/2)-x+(function.length/2)]; //reflect function over 2nd half of array
+  for(int x = (function.length/2)+1; x < function.length; x++) {
+    function[x] = function[(function.length/2)-x+(function.length/2)]; //reflect fn over 2nd half of array
   }
 }
 
@@ -40,7 +41,6 @@ public void updateOffset() {
 }
 
 public void setup() {
-  // Make a new instance of a PImage by loading an image file
   img = loadImage("self.jpg");
   
   size(img.width,img.height);
@@ -67,12 +67,11 @@ public void draw() {
     if(i>140) updateOffset();
     
     for (int j = 0; j < cols; j++ ) {
-      
       int x = j; // x position
       int y = i; // y position
-      color c = img.pixels[x + y*cols]; //grab color of image 
+      color c = img.pixels[x + y*cols]; //grab color of original image 
       
-      pixels[y*width + (x + (int)offset)%cols] = c; //set display pixels at new location
+      pixels[y*width + (x + (int)offset)%cols] = c; //display pixels at new location
     }
   }
   
